@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách</title>
+</head>
+<body>
+<h2>Danh sách Khách hàng</h2>
+<a th:href="@{/customers/create}">Thêm khách hàng mới</a> |
+<a th:href="@{/admin/logout}">Đăng xuất</a>
+<form th:action="@{/customers}" method="get">
+    <input type="text" name="keyword" placeholder="Tìm theo tên"
+           th:value="${keyword}">
+    <button type="submit">Tìm kiếm</button>
+</form>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Số điện thoại</th>
+        <th>Email</th>
+        <th>Địa chỉ</th>
+        <th>Trạng thái</th>
+    </tr>
+    <tr th:each="c : ${customerPage}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.phone}"></td>
+        <td th:text="${c.email}"></td>
+        <td th:text="${c.address}"></td>
+        <td th:text="${c.isDeleted}?'Active':'Inactive' "></td>
+        <td>
+            <a th:href="@{'/customers/edit/' + ${c.id}}">Sửa</a> |
+            <a th:href="@{'/customers/delete/' + ${c.id}}">Xóa</a>
+        </td>
+    </tr>
+</table>
+<div>
+    <span th:if="${currentPage > 0}">
+        <a th:href="@{/customers(page=${currentPage - 1}, size=5)}">Trang trước</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/customers(page=${i}, size=5)}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active'"></a>
+    </span>
+
+    <span th:if="${currentPage + 1 < totalPages}">
+        <a th:href="@{/customers(page=${currentPage + 1}, size=5)}">Trang sau</a>
+    </span>
+</div>
+
+</body>
+</html>

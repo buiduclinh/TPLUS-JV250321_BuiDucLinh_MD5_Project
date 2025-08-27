@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm/Sửa</title>
+</head>
+<body>
+<h2 th:text="${customer.id != null ? 'Sửa thông tin khách hàng ' : 'Thêm mới khách hàng'}"></h2>
+<form th:action="@{/customers/save}" th:object="${customer}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Tên:</label><input type="text" th:field="*{name}" required><br>
+    <label>Số điện thoại:</label><input type="text" th:field="*{phone}" required><br>
+    <label>Email:</label><input type="text" th:field="*{email}" required><br>
+    <label>Địa chỉ:</label><input type="text" th:field="*{address}" required><br>
+    <label>Trạng thái:</label><input type="radio" th:field="*{isDeleted}" value="true" required>Active<br>
+    <label>Trạng thái:</label><input type="radio" th:field="*{isDeleted}" value="false" required>Inactive<br>
+    <button type="submit">Lưu</button>
+</form>
+<a th:href="@{/customers}">Quay lại</a>
+</body>
+</html>

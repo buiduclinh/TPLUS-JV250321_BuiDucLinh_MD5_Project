@@ -9,3 +9,15 @@ INSERT INTO product (name, brand, price, stock, image, is_deleted) VALUES
                                                                        ('Realme GT Neo 5', 'Realme', 10990000, 28, 'realmegtneo5.jpg', false),
                                                                        ('Asus ROG Phone 7', 'Asus', 23990000, 10, 'rogphone7.jpg', false),
                                                                        ('Nokia G50 128GB', 'Nokia', 4990000, 35, 'nokiag50.jpg', false);
+
+INSERT INTO customer (name, phone, email, address, is_deleted) VALUES
+                                                                  ('Nguyễn Văn A', '0901111111', 'vana@example.com', 'Hà Nội', false),
+                                                                  ('Trần Thị B', '0902222222', 'thib@example.com', 'TP. HCM', false),
+                                                                  ('Lê Văn C', '0903333333', 'vanc@example.com', 'Đà Nẵng', false),
+                                                                  ('Phạm Thị D', '0904444444', 'thid@example.com', 'Cần Thơ', false),
+                                                                  ('Hoàng Văn E', '0905555555', 'vane@example.com', 'Hải Phòng', false),
+                                                                  ('Đỗ Thị F', '0906666666', 'thif@example.com', 'Nha Trang', false),
+                                                                  ('Bùi Văn G', '0907777777', 'vang@example.com', 'Huế', false),
+                                                                  ('Vũ Thị H', '0908888888', 'thih@example.com', 'Quảng Ninh', false),
+                                                                  ('Ngô Văn I', '0909999999', 'vani@example.com', 'Bình Dương', false),
+                                                                  ('Phan Thị J', '0910000000', 'thij@example.com', 'Đà Lạt', false);
