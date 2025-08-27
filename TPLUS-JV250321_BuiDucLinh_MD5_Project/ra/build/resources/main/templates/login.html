@@ -5,11 +5,11 @@
 </head>
 <body>
 <h2>Đăng nhập</h2>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/admin/login}" method="post">
     <label>Username:</label><input type="text" name="username"><br>
     <label>Password:</label><input type="password" name="password"><br>
     <button type="submit">Login</button>
 </form>
-<a th:href="@{/register}">Chưa có tài khoản? Đăng ký</a>
+<a th:href="@{/admin/register}">Chưa có tài khoản? Đăng ký</a>
 </body>
 </html>

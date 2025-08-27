@@ -6,7 +6,16 @@
 <body>
 <h2>Danh sách sản phẩm</h2>
 <a th:href="@{/products/create}">Thêm sản phẩm mới</a> |
-<a th:href="@{/logout}">Đăng xuất</a>
+<a th:href="@{/admin/logout}">Đăng xuất</a>
+<form th:action="@{/products}" method="get">
+    <input type="text" name="keyword" placeholder="Tìm theo tên"
+           th:value="${keyword}">
+    <input type="number" name="minStock" placeholder="Tồn kho từ"
+           th:value="${minStock}">
+    <input type="number" name="maxStock" placeholder="đến"
+           th:value="${maxStock}">
+    <button type="submit">Tìm kiếm</button>
+</form>
 <table border="1">
     <tr>
         <th>ID</th>
@@ -14,15 +23,17 @@
         <th>Nhãn hàng</th>
         <th>Giá</th>
         <th>Tồn kho</th>
+        <th>Trạng thái đã xóa</th>
         <th>Ảnh</th>
         <th>Hành động</th>
     </tr>
-    <tr th:each="p : ${products}">
+    <tr th:each="p : ${productPage}">
         <td th:text="${p.id}"></td>
         <td th:text="${p.name}"></td>
         <td th:text="${p.brand}"></td>
         <td th:text="${p.price}"></td>
         <td th:text="${p.stock}"></td>
+        <td th:text="${p.isDeleted}"></td>
         <td><img th:src="${p.image}" alt="Ảnh" width="80"/></td>
         <td>
             <a th:href="@{'/products/edit/' + ${p.id}}">Sửa</a> |
@@ -30,5 +41,21 @@
         </td>
     </tr>
 </table>
+<div>
+    <span th:if="${currentPage > 0}">
+        <a th:href="@{/products(page=${currentPage - 1}, size=5)}">Trang trước</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/products(page=${i}, size=5)}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active'"></a>
+    </span>
+
+    <span th:if="${currentPage + 1 < totalPages}">
+        <a th:href="@{/products(page=${currentPage + 1}, size=5)}">Trang sau</a>
+    </span>
+</div>
+
 </body>
 </html>

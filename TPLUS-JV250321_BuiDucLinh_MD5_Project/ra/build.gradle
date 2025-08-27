@@ -35,8 +35,11 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    // Thêm Spring Security để có PasswordEncoder
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    // Thêm Spring Security để có PasswordEncoder
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // up ảnh
+    // https://mvnrepository.com/artifact/com.cloudinary/cloudinary-http44
+    implementation("com.cloudinary:cloudinary-http44:1.39.0")
 }
 
 tasks.named('test') {

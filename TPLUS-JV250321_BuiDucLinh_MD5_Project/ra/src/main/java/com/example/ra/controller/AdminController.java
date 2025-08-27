@@ -47,7 +47,7 @@ public class AdminController {
         try {
             Admin admin = adminService.login(username, password);
             session.setAttribute("ADMIN", admin.getId());
-            return "redirect:/admin/home";
+            return "home";
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             return "login";
@@ -60,12 +60,12 @@ public class AdminController {
             return "redirect:/admin/login";
         }
         model.addAttribute("message", "Chào mừng Admin!");
-        return "adminHome";
+        return "home";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/admin/login?logout=true";
+        return "login";
     }
 }

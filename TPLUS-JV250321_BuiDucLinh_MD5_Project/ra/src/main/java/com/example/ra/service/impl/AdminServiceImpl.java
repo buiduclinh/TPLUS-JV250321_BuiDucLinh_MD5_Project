@@ -4,16 +4,14 @@ import com.example.ra.model.entity.Admin;
 import com.example.ra.repository.AdminRepository;
 import com.example.ra.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
-    private PasswordEncoder passwordEncoder;
+//    private PasswordEncoder passwordEncoder;
 
     @Override
     public Admin register(String username, String rawPassword) {
@@ -27,20 +25,17 @@ public class AdminServiceImpl implements AdminService {
 
         Admin admin = new Admin();
         admin.setUsername(username);
-        admin.setPassword(passwordEncoder.encode(rawPassword));
+        admin.setPassword(rawPassword);
+//        admin.setPassword(passwordEncoder.encode(rawPassword));
         return adminRepository.save(admin);
     }
 
     @Override
     public Admin login(String username, String rawPassword) {
         Admin admin = adminRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return (Admin) User.builder()
-                .username(admin.getUsername())
-                .password(admin.getPassword())
-                .roles("ADMIN")
-                .build();
+        return admin;
     }
 
     @Override
