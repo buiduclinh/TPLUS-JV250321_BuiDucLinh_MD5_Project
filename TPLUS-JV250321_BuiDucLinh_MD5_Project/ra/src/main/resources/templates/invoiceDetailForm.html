@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm/Sửa</title>
+</head>
+<body>
+<h2 th:text="${invoiceDetail.id != null ? 'Sửa chi tiết hóa đơn' : 'Thêm chi tiết hóa đơn'}"></h2>
+
+<form th:action="@{/invoiceDetails/save}" th:object="${invoiceDetail}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{invoice.id}"/>
+    <label>Hóa đơn:</label>
+    <input type="text" th:value="${invoiceDetail.invoice.id}" readonly/><br>
+    <label>Sản phẩm:</label>
+    <select th:field="*{product.id}">
+        <option value="" disabled selected>-- chọn sản phẩm --</option>
+        <option th:each="p : ${products}"
+                th:value="${p.id}"
+                th:text="${p.name + ' - ' + p.price}">
+        </option>
+    </select><br>
+    <label>Số lượng:</label>
+    <input type="number" th:field="*{quantity}" min="1" required/><br>
+    <label type="hidden" >Giá:</label><input type="hidden"
+                              th:value="${invoiceDetail.product != null ? invoiceDetail.product.price : ''}"
+                              readonly><br>
+    <button type="submit">Lưu</button>
+</form>
+<a th:href="@{/invoices}">Quay lại</a>
+</body>
+</html>

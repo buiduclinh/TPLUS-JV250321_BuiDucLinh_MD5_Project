@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm/Sửa</title>
+</head>
+<body>
+<h2 th:text="${invoice.id != null ? 'Sửa thông tin khách hàng ' : 'Thêm mới khách hàng'}"></h2>
+<form th:action="@{/invoices/save}" th:object="${invoice}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>khách hàng:</label><input type="text" th:field="*{customer}" required th:attr="readonly=${id != null}" ><br>
+    <label>Ngày khởi tạo:</label><input type="text" th:field="*{createdAt}" required readonly><br>
+    <label>Tổng hóa đơn:</label><input type="text" th:field="*{totalAmount}" required readonly><br>
+    <label>Trạng thái:</label>
+    <select th:field="*{status}">
+        <option value="PENDING">PENDING</option>
+        <option value="CONFIRMED">CONFIRMED</option>
+        <option value="SHIPPING">SHIPPING</option>
+        <option value="COMPLETED">COMPLETED</option>
+        <option value="CANCELED">CANCELED</option>
+    </select>
+
+    <button type="submit">Lưu</button>
+</form>
+<a th:href="@{/invoices}">Quay lại</a>
+</body>
+</html>

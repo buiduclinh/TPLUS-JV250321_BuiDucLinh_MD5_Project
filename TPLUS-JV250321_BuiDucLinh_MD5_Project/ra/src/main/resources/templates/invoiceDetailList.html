@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách sản phẩm</title>
+</head>
+<body>
+<h2>Danh sách</h2>
+<a th:href="@{'/invoiceDetails/create/' + ${invoice.id}}">Thêm mới chi tiết hóa đơn</a>|
+<a th:href="@{/admin/logout}">Đăng xuất</a>
+<!--<form th:action="@{/invoideDetails}" method="get">-->
+<!--    <input type="text" name="keyword" placeholder="Tìm theo tên"-->
+<!--           th:value="${keyword}">-->
+<!--    <button type="submit">Tìm kiếm</button>-->
+</form>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Mã hóa đơn</th>
+        <th>Mã sản phẩm</th>
+        <th>Số lượng</th>
+        <th>Đơn giá</th>
+    </tr>
+    <tr th:each="ind : ${invoiceDetails}">
+        <td th:text="${ind.id}"></td>
+        <td th:text="${ind.invoice.id}"></td>
+        <td th:text="${ind.product.id}"></td>
+        <td th:text="${ind.quantity}"></td>
+        <td th:text="${ind.unitPrice}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

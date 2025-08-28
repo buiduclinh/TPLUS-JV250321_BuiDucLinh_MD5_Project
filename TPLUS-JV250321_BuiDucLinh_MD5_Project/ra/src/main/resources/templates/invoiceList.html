@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách</title>
+</head>
+<body>
+<h2>Danh sách hóa đơn</h2>
+<a th:href="@{/invoices/create}">Thêm Hóa đơn mới</a> |
+<a th:href="@{/admin/logout}">Đăng xuất</a>
+<form th:action="@{/invoices}" method="get">
+    <input type="text" name="keyword" placeholder="Tìm theo tên"
+           th:value="${keyword}">
+    <button type="submit">Tìm kiếm</button>
+</form>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Khách hàng</th>
+        <th>Ngày xuất hóa đơn</th>
+        <th>Tổng hóa đơn</th>
+        <th>Trạng thái</th>
+    </tr>
+    <tr th:each="i : ${invoicePage}">
+        <td th:text="${i.id}"></td>
+        <td th:text="${i.customer.getId()}"></td>
+        <td th:text="${i.createdAt}"></td>
+        <td th:text="${i.totalAmount}"></td>
+        <td th:text="${i.status}"></td>
+        <td>
+            <a th:href="@{'/invoiceDetails/' + ${i.id}}">chi tiết</a> |
+            <a th:href="@{'/invoices/edit/' + ${i.id}}">cập nhật</a> |
+            <a th:href="@{'/invoices/delete/' + ${i.id}}">Xóa</a>
+        </td>
+    </tr>
+</table>
+<div>
+    <span th:if="${currentPage > 0}">
+        <a th:href="@{/invoices(page=${currentPage - 1}, size=5)}">Trang trước</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/invoices(page=${i}, size=5)}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active'"></a>
+    </span>
+
+    <span th:if="${currentPage + 1 < totalPages}">
+        <a th:href="@{/invoices(page=${currentPage + 1}, size=5)}">Trang sau</a>
+    </span>
+</div>
+
+</body>
+</html>

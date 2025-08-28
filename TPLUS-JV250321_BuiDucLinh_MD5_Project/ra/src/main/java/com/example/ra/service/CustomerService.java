@@ -2,8 +2,6 @@ package com.example.ra.service;
 
 import com.example.ra.model.entity.Customer;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 public interface CustomerService {
