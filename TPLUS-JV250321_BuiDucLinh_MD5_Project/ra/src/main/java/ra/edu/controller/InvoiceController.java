@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ra.edu.model.entity.Customer;
 import ra.edu.model.entity.Invoice;
+import ra.edu.model.entity.InvoiceDetail;
 import ra.edu.repository.CustomerRepository;
 import ra.edu.repository.InvoiceRepository;
 import ra.edu.service.InvoiceService;
@@ -61,9 +62,8 @@ public class InvoiceController {
     }
 
     @PostMapping("/save")
-    public String saveInvoice(@ModelAttribute Invoice invoice,Model model) {
+    public String saveInvoice(@ModelAttribute Invoice invoice, Model model) {
         Customer customer = invoice.getCustomer();
-
         if (customer == null || Boolean.TRUE.equals(customer.getIsDeleted())) {
             model.addAttribute("errors", "Khách hàng không hợp lệ hoặc đã bị xóa!");
             return "invoiceForm";
@@ -72,9 +72,25 @@ public class InvoiceController {
         if (invoice.getId() == null) {
             invoice.setTotalAmount(BigDecimal.ZERO);
             invoiceRepository.save(invoice);
-            return "redirect:/invoices";
+        } else {
+            Invoice existingInvoice = invoiceService.findById(invoice.getId());
+
+            if (existingInvoice == null) {
+                model.addAttribute("errors", "Không tìm thấy hóa đơn!");
+                return "invoiceForm";
+            }
+
+            invoice.setInvoiceDetails(existingInvoice.getInvoiceDetails());
+
+            existingInvoice.setStatus(invoice.getStatus());
+            existingInvoice.setCustomer(invoice.getCustomer());
+            existingInvoice.setTotalAmount(invoice.getTotalAmount());
+
+            existingInvoice.setInvoiceDetails(invoice.getInvoiceDetails());
+
+            invoiceService.save(existingInvoice);
         }
-        invoiceService.save(invoice);
+
         return "redirect:/invoices";
     }
 
