@@ -47,7 +47,7 @@ public class AdminController {
         try {
             Admin admin = adminService.login(username, password);
             session.setAttribute("ADMIN", admin.getId());
-            return "home";
+            return "redirect:/home";
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             return "login";

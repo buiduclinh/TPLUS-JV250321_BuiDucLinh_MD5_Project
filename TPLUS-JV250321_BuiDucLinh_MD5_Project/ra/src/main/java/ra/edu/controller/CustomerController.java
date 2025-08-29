@@ -1,5 +1,8 @@
 package ra.edu.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.validation.BindingResult;
 import ra.edu.model.entity.Customer;
 import ra.edu.repository.CustomerRepository;
 import ra.edu.service.CustomerService;
@@ -47,8 +50,22 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute Customer customer) {
-        customerService.save(customer);
+    public String saveCustomer(@Valid @ModelAttribute Customer customer,
+                               BindingResult bindingResult, Model model) {
+
+        if (customerRepository.existsByPhone(customer.getPhone())) {
+            bindingResult.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại!");
+        }
+
+        if (customerRepository.existsByEmail(customer.getEmail())) {
+            bindingResult.rejectValue("email", "error.customer", "Email đã tồn tại!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "customerForm";
+        }
+
+        customerRepository.save(customer);
         return "redirect:/customers";
     }
 

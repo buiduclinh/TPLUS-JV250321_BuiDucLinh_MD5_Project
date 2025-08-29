@@ -13,4 +13,8 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
     List<Customer> findByIsDeletedFalse();
 
     Page<Customer> findByNameContainingIgnoreCase(String keyword, PageRequest of);
+
+    boolean existsByPhone(String phone);
+
+    boolean existsByEmail(String email);
 }

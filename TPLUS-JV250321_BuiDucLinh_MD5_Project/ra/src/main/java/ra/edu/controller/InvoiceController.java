@@ -2,7 +2,9 @@ package ra.edu.controller;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ra.edu.model.entity.Customer;
 import ra.edu.model.entity.Invoice;
+import ra.edu.repository.CustomerRepository;
 import ra.edu.repository.InvoiceRepository;
 import ra.edu.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ import java.util.List;
 public class InvoiceController {
     private final InvoiceService invoiceService;
     private final InvoiceRepository invoiceRepository;
+
+    private final CustomerRepository customerRepository;
 
     @GetMapping
     public String listInvoices(Model model,
@@ -51,11 +55,20 @@ public class InvoiceController {
     @GetMapping("/create")
     public String createForm(Model model) {
         model.addAttribute("invoice", new Invoice());
+        List<Customer> activeCustomers = customerRepository.findByIsDeletedFalse();
+        model.addAttribute("customers", activeCustomers);
         return "invoiceForm";
     }
 
     @PostMapping("/save")
-    public String saveInvoice(@ModelAttribute Invoice invoice) {
+    public String saveInvoice(@ModelAttribute Invoice invoice,Model model) {
+        Customer customer = invoice.getCustomer();
+
+        if (customer == null || Boolean.TRUE.equals(customer.getIsDeleted())) {
+            model.addAttribute("errors", "Khách hàng không hợp lệ hoặc đã bị xóa!");
+            return "invoiceForm";
+        }
+
         if (invoice.getId() == null) {
             invoice.setTotalAmount(BigDecimal.ZERO);
             invoiceRepository.save(invoice);

@@ -33,7 +33,7 @@
             <tr>
                 <th>ID</th>
                 <th>Mã hóa đơn</th>
-                <th>Mã sản phẩm</th>
+                <th>Mã và tên sản phẩm</th>
                 <th>Số lượng</th>
                 <th>Đơn giá</th>
             </tr>
@@ -42,7 +42,7 @@
             <tr th:each="ind : ${invoiceDetails}">
                 <td th:text="${ind.id}"></td>
                 <td th:text="${ind.invoice.id}"></td>
-                <td th:text="${ind.product.id}"></td>
+                <td th:text="${ind.product.id} + ' - ' + ${ind.product.name}"></td>
                 <td th:text="${ind.quantity}"></td>
                 <td th:text="${ind.unitPrice}"></td>
             </tr>

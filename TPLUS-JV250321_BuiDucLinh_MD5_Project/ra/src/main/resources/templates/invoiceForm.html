@@ -19,6 +19,7 @@
                 <label>Khách hàng</label>
                 <input type="text" class="form-control" th:field="*{customer}" required
                        th:attr="readonly=${invoice.id != null}">
+                    <span th:if="${errors != null}" th:text="${errors}" style="color:red"></span>
             </div>
 
             <div class="form-group">

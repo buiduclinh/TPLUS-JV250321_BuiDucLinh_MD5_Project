@@ -21,3 +21,5 @@ INSERT INTO customer (name, phone, email, address, is_deleted) VALUES
                                                                   ('Vũ Thị H', '0908888888', 'thih@example.com', 'Quảng Ninh', false),
                                                                   ('Ngô Văn I', '0909999999', 'vani@example.com', 'Bình Dương', false),
                                                                   ('Phan Thị J', '0910000000', 'thij@example.com', 'Đà Lạt', false);
+INSERT INTO admin (username, password)
+VALUES ('admin1', '123456');
