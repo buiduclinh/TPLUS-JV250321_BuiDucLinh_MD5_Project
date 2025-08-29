@@ -6,7 +6,7 @@
 <body>
 <h2 th:text="${invoiceDetail.id != null ? 'Sửa chi tiết hóa đơn' : 'Thêm chi tiết hóa đơn'}"></h2>
 
-<form th:action="@{/invoiceDetails/save}" th:object="${invoiceDetail}" method="post">
+<form th:action="@{'/invoiceDetails/save'+ ${invoice.id}}" th:object="${invoiceDetail}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:field="*{invoice.id}"/>
     <label>Hóa đơn:</label>

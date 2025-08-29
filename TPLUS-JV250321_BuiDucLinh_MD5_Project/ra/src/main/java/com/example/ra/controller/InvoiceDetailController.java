@@ -55,6 +55,7 @@ public class InvoiceDetailController {
     public String saveInvoiceDetail(@ModelAttribute InvoiceDetail invoiceDetail) {
         Product product = productService.findById(invoiceDetail.getProduct().getId());
         invoiceDetail.setProduct(product);
+        invoiceDetail.setUnitPrice(product.getPrice());
         invoiceDetailService.save(invoiceDetail);
         Invoice invoice = invoiceService.findById(invoiceDetail.getInvoice().getId());
         BigDecimal total = invoiceDetail.getUnitPrice()
@@ -65,8 +66,9 @@ public class InvoiceDetailController {
         invoice.setTotalAmount(total);
         invoiceService.save(invoice);
 
-        return "redirect:/invoices";
+        return "redirect:/invoiceDetails";
     }
+
 
     @GetMapping("/delete")
     public String deleteInvoiceDetail(@RequestParam("id") int id) {

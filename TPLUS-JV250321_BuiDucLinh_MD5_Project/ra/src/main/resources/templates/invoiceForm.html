@@ -4,7 +4,7 @@
     <title>Thêm/Sửa</title>
 </head>
 <body>
-<h2 th:text="${invoice.id != null ? 'Sửa thông tin khách hàng ' : 'Thêm mới khách hàng'}"></h2>
+<h2 th:text="${invoice.id != null ? 'cập nhật trạng thái hóa đơn' : 'Thêm mới hóa đơn'}"></h2>
 <form th:action="@{/invoices/save}" th:object="${invoice}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <label>khách hàng:</label><input type="text" th:field="*{customer}" required th:attr="readonly=${id != null}" ><br>
