@@ -1,11 +1,109 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Trang chủ</title>
+    <title>Thống kê doanh thu</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h2>Xin chào Admin!</h2>
-<a th:href="@{/products}">products</a>
-<a th:href="@{/admin/logout}">Đăng xuất</a>
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Xin chào Admin!</h2>
+        <div>
+            <div class="d-flex mb-3">
+                <!-- Điều hướng quản lý -->
+                <a th:href="@{/products}" class="btn btn-info btn-sm mr-2">
+                    📦 Products
+                </a>
+                <a th:href="@{/customers}" class="btn btn-info btn-sm mr-2">
+                    🧑‍🤝‍🧑 Customers
+                </a>
+                <a th:href="@{/invoices}" class="btn btn-info btn-sm mr-2">
+                    🧾 Invoices
+                </a>
+                <!-- Logout -->
+                <a th:href="@{/admin/logout}" class="btn btn-danger btn-sm">
+                    🚪 Đăng xuất
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="mb-4 text-center">Thống kê doanh thu</h1>
+
+    <!-- Doanh thu theo ngày -->
+    <h3 class="mt-5 mb-3">Doanh thu theo ngày</h3>
+    <a th:href="@{/revenues/days}" class="btn primary btn-sm">
+        Chi tiết
+    </a>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Ngày</th>
+                <th>Tổng doanh thu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${revenuesByDay}">
+                <td th:text="${r[0]}"></td>
+                <td th:text="${r[1]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Doanh thu theo tháng -->
+    <h3 class="mt-5 mb-3">Doanh thu theo tháng</h3>
+    <a th:href="@{/revenues/months}" class="btn primary btn-sm">
+        Chi tiết
+    </a>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Tháng</th>
+                <th>Năm</th>
+                <th>Tổng doanh thu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${revenuesByMonth}">
+                <td th:text="${r[0]}"></td>
+                <td th:text="${r[1]}"></td>
+                <td th:text="${r[2]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Doanh thu theo năm -->
+    <h3 class="mt-5 mb-3">Doanh thu theo năm</h3>
+    <a th:href="@{/revenues/years}" class="btn primary btn-sm">
+        Chi tiết
+    </a>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Năm</th>
+                <th>Tổng doanh thu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${revenuesByYear}">
+                <td th:text="${r[0]}"></td>
+                <td th:text="${r[1]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

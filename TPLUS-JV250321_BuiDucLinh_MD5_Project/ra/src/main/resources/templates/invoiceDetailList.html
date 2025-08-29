@@ -1,33 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Danh sách sản phẩm</title>
+    <meta charset="UTF-8">
+    <title>Danh sách chi tiết hóa đơn</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-<h2>Danh sách</h2>
-<a th:href="@{'/invoiceDetails/create/' + ${invoice.id}}">Thêm mới chi tiết hóa đơn</a>|
-<a th:href="@{/admin/logout}">Đăng xuất</a>
-<!--<form th:action="@{/invoideDetails}" method="get">-->
-<!--    <input type="text" name="keyword" placeholder="Tìm theo tên"-->
-<!--           th:value="${keyword}">-->
-<!--    <button type="submit">Tìm kiếm</button>-->
-</form>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Mã hóa đơn</th>
-        <th>Mã sản phẩm</th>
-        <th>Số lượng</th>
-        <th>Đơn giá</th>
-    </tr>
-    <tr th:each="ind : ${invoiceDetails}">
-        <td th:text="${ind.id}"></td>
-        <td th:text="${ind.invoice.id}"></td>
-        <td th:text="${ind.product.id}"></td>
-        <td th:text="${ind.quantity}"></td>
-        <td th:text="${ind.unitPrice}"></td>
-    </tr>
-</table>
+<body class="bg-light">
 
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Danh sách chi tiết hóa đơn</h2>
+        <div>
+            <div class="d-flex mb-3">
+                <!-- Thêm chi tiết hóa đơn -->
+                <a th:href="@{'/invoiceDetails/create/' + ${invoice.id}}" class="btn btn-success btn-sm mr-2">
+                    ➕ Thêm mới
+                </a>
+
+                <!-- Đăng xuất -->
+                <a th:href="@{/admin/logout}" class="btn btn-danger btn-sm">
+                    🚪 Đăng xuất
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bảng chi tiết hóa đơn -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Mã hóa đơn</th>
+                <th>Mã sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ind : ${invoiceDetails}">
+                <td th:text="${ind.id}"></td>
+                <td th:text="${ind.invoice.id}"></td>
+                <td th:text="${ind.product.id}"></td>
+                <td th:text="${ind.quantity}"></td>
+                <td th:text="${ind.unitPrice}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-3">
+        <a th:href="@{/invoices}" class="btn btn-secondary btn-sm">Quay lại</a>
+    </div>
+</div>
+
+<!-- Bootstrap 4 JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

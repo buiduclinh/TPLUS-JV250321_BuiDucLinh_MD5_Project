@@ -1,26 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Thêm/Sửa</title>
+    <meta charset="UTF-8">
+    <title>Thêm/Sửa hóa đơn</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-<h2 th:text="${invoice.id != null ? 'cập nhật trạng thái hóa đơn' : 'Thêm mới hóa đơn'}"></h2>
-<form th:action="@{/invoices/save}" th:object="${invoice}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <label>khách hàng:</label><input type="text" th:field="*{customer}" required th:attr="readonly=${id != null}" ><br>
-    <label>Ngày khởi tạo:</label><input type="text" th:field="*{createdAt}" required readonly><br>
-    <label>Tổng hóa đơn:</label><input type="text" th:field="*{totalAmount}" required readonly><br>
-    <label>Trạng thái:</label>
-    <select th:field="*{status}">
-        <option value="PENDING">PENDING</option>
-        <option value="CONFIRMED">CONFIRMED</option>
-        <option value="SHIPPING">SHIPPING</option>
-        <option value="COMPLETED">COMPLETED</option>
-        <option value="CANCELED">CANCELED</option>
-    </select>
+<body class="bg-light">
 
-    <button type="submit">Lưu</button>
-</form>
-<a th:href="@{/invoices}">Quay lại</a>
+<div class="container my-5">
+    <div class="card shadow-lg p-4 mx-auto" style="max-width: 600px;">
+        <h2 class="text-center mb-4" th:text="${invoice.id != null ? 'Cập nhật trạng thái hóa đơn' : 'Thêm mới hóa đơn'}"></h2>
+
+        <form th:action="@{/invoices/save}" th:object="${invoice}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+                <label>Khách hàng</label>
+                <input type="text" class="form-control" th:field="*{customer}" required
+                       th:attr="readonly=${invoice.id != null}">
+            </div>
+
+            <div class="form-group">
+                <label>Ngày khởi tạo</label>
+                <input type="text" class="form-control" th:field="*{createdAt}" required readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Tổng hóa đơn</label>
+                <input type="text" class="form-control" th:field="*{totalAmount}" required readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Trạng thái</label>
+                <select class="form-control" th:field="*{status}">
+                    <option value="PENDING">PENDING</option>
+                    <option value="CONFIRMED">CONFIRMED</option>
+                    <option value="SHIPPING">SHIPPING</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="CANCELED">CANCELED</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block">Lưu</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <a th:href="@{/invoices}" class="btn btn-secondary btn-sm">Quay lại</a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 4 JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
