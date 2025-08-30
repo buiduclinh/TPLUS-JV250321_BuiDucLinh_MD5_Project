@@ -14,13 +14,13 @@
             <div class="d-flex mb-3">
                 <!-- Điều hướng quản lý -->
                 <a th:href="@{/products}" class="btn btn-info btn-sm mr-2">
-                    📦 Products
+                    📦 Sản phẩm
                 </a>
                 <a th:href="@{/customers}" class="btn btn-info btn-sm mr-2">
-                    🧑‍🤝‍🧑 Customers
+                    🧑‍🤝‍🧑 Khách hàng
                 </a>
                 <a th:href="@{/invoices}" class="btn btn-info btn-sm mr-2">
-                    🧾 Invoices
+                    🧾 Hóa đơn
                 </a>
                 <!-- Logout -->
                 <a th:href="@{/admin/logout}" class="btn btn-danger btn-sm">
@@ -34,9 +34,7 @@
 
     <!-- Doanh thu theo ngày -->
     <h3 class="mt-5 mb-3">Doanh thu theo ngày</h3>
-    <a th:href="@{/revenues/days}" class="btn primary btn-sm">
-        Chi tiết
-    </a>
+    <a th:href="@{/revenues/days}" class="btn primary btn-sm">Chi tiết</a>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -46,9 +44,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="r : ${revenuesByDay}">
-                <td th:text="${r[0]}"></td>
-                <td th:text="${r[1]}"></td>
+            <tr th:if="${revenuesByDay.size() > 0}">
+                <td th:text="${revenuesByDay[revenuesByDay.size() - 1][0]}"></td>
+                <td th:text="${revenuesByDay[revenuesByDay.size() - 1][1]}"></td>
+            </tr>
+            <tr th:if="${revenuesByDay.size() == 0}">
+                <td colspan="2" class="text-center">Chưa có dữ liệu</td>
             </tr>
             </tbody>
         </table>
@@ -56,9 +57,7 @@
 
     <!-- Doanh thu theo tháng -->
     <h3 class="mt-5 mb-3">Doanh thu theo tháng</h3>
-    <a th:href="@{/revenues/months}" class="btn primary btn-sm">
-        Chi tiết
-    </a>
+    <a th:href="@{/revenues/months}" class="btn primary btn-sm">Chi tiết</a>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -69,10 +68,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="r : ${revenuesByMonth}">
-                <td th:text="${r[0]}"></td>
-                <td th:text="${r[1]}"></td>
-                <td th:text="${r[2]}"></td>
+            <tr th:if="${revenuesByMonth.size() > 0}">
+                <td th:text="${revenuesByMonth[revenuesByMonth.size() - 1][0]}"></td>
+                <td th:text="${revenuesByMonth[revenuesByMonth.size() - 1][1]}"></td>
+                <td th:text="${revenuesByMonth[revenuesByMonth.size() - 1][2]}"></td>
+            </tr>
+            <tr th:if="${revenuesByMonth.size() == 0}">
+                <td colspan="3" class="text-center">Chưa có dữ liệu</td>
             </tr>
             </tbody>
         </table>
@@ -80,9 +82,7 @@
 
     <!-- Doanh thu theo năm -->
     <h3 class="mt-5 mb-3">Doanh thu theo năm</h3>
-    <a th:href="@{/revenues/years}" class="btn primary btn-sm">
-        Chi tiết
-    </a>
+    <a th:href="@{/revenues/years}" class="btn primary btn-sm">Chi tiết</a>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -92,17 +92,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="r : ${revenuesByYear}">
-                <td th:text="${r[0]}"></td>
-                <td th:text="${r[1]}"></td>
+            <tr th:if="${revenuesByYear.size() > 0}">
+                <td th:text="${revenuesByYear[revenuesByYear.size() - 1][0]}"></td>
+                <td th:text="${revenuesByYear[revenuesByYear.size() - 1][1]}"></td>
+            </tr>
+            <tr th:if="${revenuesByYear.size() == 0}">
+                <td colspan="2" class="text-center">Chưa có dữ liệu</td>
             </tr>
             </tbody>
         </table>
     </div>
 
-</div>
 
-<!-- Bootstrap JS -->
+    <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

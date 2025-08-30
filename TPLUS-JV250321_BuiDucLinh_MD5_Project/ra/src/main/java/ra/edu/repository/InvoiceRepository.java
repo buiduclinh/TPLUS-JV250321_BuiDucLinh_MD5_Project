@@ -54,6 +54,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
             "ORDER BY YEAR(i.createdAt)")
     List<Object[]> getRevenueByYear();
 
+
     @Query("SELECT DISTINCT YEAR(i.createdAt) FROM Invoice i ORDER BY YEAR(i.createdAt) DESC")
     List<Integer> findAllYears();
 }

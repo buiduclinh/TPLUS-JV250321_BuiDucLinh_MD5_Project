@@ -48,4 +48,20 @@ public class CustomerServiceImpl implements CustomerService {
         Pageable pageable = PageRequest.of(page, size);
         return customerRepository.search(keyword, isDeleted, pageable);
     }
+
+    @Override
+    public boolean isEmailDuplicate(Customer customer) {
+        Customer existing = customerRepository.findByEmail(customer.getEmail());
+        if (existing == null) return false;
+
+        return !existing.getId().equals(customer.getId());
+    }
+
+    @Override
+    public boolean isPhoneDuplicate(Customer customer) {
+        Customer existing = customerRepository.findByPhone(customer.getPhone());
+        if (existing == null) return false;
+
+        return !existing.getId().equals(customer.getId());
+    }
 }

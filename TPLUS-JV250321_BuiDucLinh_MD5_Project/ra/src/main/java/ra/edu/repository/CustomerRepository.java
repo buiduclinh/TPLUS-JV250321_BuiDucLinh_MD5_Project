@@ -34,4 +34,8 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
             @Param("isDeleted") Boolean isDeleted,
             Pageable pageable
     );
+
+    Customer findByEmail(String email);
+
+    Customer findByPhone(String phone);
 }

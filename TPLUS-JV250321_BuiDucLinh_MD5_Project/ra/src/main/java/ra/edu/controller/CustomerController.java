@@ -56,14 +56,15 @@ public class CustomerController {
     public String saveCustomer(@Valid @ModelAttribute Customer customer,
                                BindingResult bindingResult, Model model) {
 
-        if (customerRepository.existsByPhone(customer.getPhone())) {
-            bindingResult.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại!");
+        if (customer.getId() == null) {
+            if (customerRepository.existsByEmail(customer.getEmail())) {
+                bindingResult.rejectValue("email", "error.customer", "Email đã tồn tại!");
+            }
+            if (customerRepository.existsByPhone(customer.getPhone())) {
+                bindingResult.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại!");
+            }
         }
-
-        if (customerRepository.existsByEmail(customer.getEmail())) {
-            bindingResult.rejectValue("email", "error.customer", "Email đã tồn tại!");
-        }
-
+       
         if (bindingResult.hasErrors()) {
             return "customerForm";
         }
