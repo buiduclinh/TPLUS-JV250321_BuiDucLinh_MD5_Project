@@ -1,6 +1,9 @@
 package ra.edu.service.impl;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ra.edu.model.entity.Customer;
 import ra.edu.repository.CustomerRepository;
 import ra.edu.service.CustomerService;
@@ -35,5 +38,14 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = findById(id);
         customer.setIsDeleted(true);
         customerRepository.save(customer);
+    }
+
+    @Override
+    public Page<Customer> search(String keyword, Boolean isDeleted, int page, int size) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            keyword = null;
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        return customerRepository.search(keyword, isDeleted, pageable);
     }
 }

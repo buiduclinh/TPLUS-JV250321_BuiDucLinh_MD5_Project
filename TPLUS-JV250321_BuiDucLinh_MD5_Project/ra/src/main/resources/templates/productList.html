@@ -34,9 +34,14 @@
     <!-- Form tìm kiếm -->
     <form th:action="@{/products}" method="get" class="row g-3 mb-4">
         <div class="col-md-4">
-            <label for="keyword" class="form-label">Tìm theo tên</label>
+            <label for="keyword" class="form-label">Tên sản phẩm</label>
             <input type="text" class="form-control" name="keyword" id="keyword"
                    placeholder="Nhập tên sản phẩm" th:value="${keyword}">
+        </div>
+        <div class="col-md-2">
+            <label for="brand" class="form-label">Nhãn hàng</label>
+            <input type="text" class="form-control" name="brand" id="brand"
+                   placeholder="Nhập nhãn hàng" th:value="${brand}">
         </div>
         <div class="col-md-2">
             <label for="minStock" class="form-label">Tồn kho từ</label>
@@ -48,9 +53,21 @@
             <input type="number" class="form-control" name="maxStock" id="maxStock"
                    th:value="${maxStock}">
         </div>
+        <div class="col-md-2">
+            <label for="isDeleted" class="form-label">Trạng thái</label>
+            <select id="isDeleted" name="isDeleted" class="form-control">
+                <option value="null" th:selected="${isDeleted == null}">Tất cả</option>
+                <option value="false" th:selected="${isDeleted == false}">Hoạt động</option>
+                <option value="true" th:selected="${isDeleted == true}">Đã xóa</option>
+            </select>
+        </div>
         <div class="col-md-2 align-self-end">
             <button type="submit" class="btn btn-primary w-100">🔍 Tìm kiếm</button>
         </div>
+        <div class="col-md-2 align-self-end">
+            <a th:href="@{/products}" class="btn btn-secondary w-100">Reset</a>
+        </div>
+
     </form>
 
     <!-- Bảng danh sách sản phẩm -->
@@ -95,14 +112,14 @@
     <nav aria-label="Page navigation" th:if="${totalPages > 0}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{/products(page=${currentPage - 1}, size=5)}">Trang trước</a>
+                <a class="page-link" th:href="@{/products(page=${currentPage - 1}, size=5, keyword=${keyword},brand=${brand},minStock=${minStock},maxStock=${maxStock},isDeleted=${isDeleted})}">Trang trước</a>
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                 th:classappend="${i == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/products(page=${i}, size=5)}" th:text="${i + 1}"></a>
+                <a class="page-link" th:href="@{/products(page=${i}, size=5,keyword=${keyword},brand=${brand},minStock=${minStock},maxStock=${maxStock},isDeleted=${isDeleted})}" th:text="${i + 1}"></a>
             </li>
             <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/products(page=${currentPage + 1}, size=5)}">Trang sau</a>
+                <a class="page-link" th:href="@{/products(page=${currentPage + 1}, size=5,keyword=${keyword},brand=${brand},minStock=${minStock},maxStock=${maxStock},isDeleted=${isDeleted})}">Trang sau</a>
             </li>
         </ul>
     </nav>

@@ -5,6 +5,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ra.edu.model.entity.Customer;
 import ra.edu.model.entity.Invoice;
 import ra.edu.model.entity.InvoiceDetail;
+import ra.edu.model.entity.InvoiceStatus;
 import ra.edu.repository.CustomerRepository;
 import ra.edu.repository.InvoiceRepository;
 import ra.edu.service.InvoiceService;
@@ -33,22 +34,30 @@ public class InvoiceController {
     public String listInvoices(Model model,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "5") int size,
-                               @RequestParam(value = "keyword", required = false) String keyword
-    ) {
+                               @RequestParam(value = "keyword", required = false) String keyword,
+                               @RequestParam(value = "status", required = false) String status,
+                               @RequestParam(value = "day", required = false) Integer day,
+                               @RequestParam(value = "month", required = false) Integer month,
+                               @RequestParam(value = "year", required = false) Integer year) {
         Page<Invoice> invoicePage;
 
-        if (keyword != null && !keyword.isEmpty()) {
-            // Nếu có search thì lấy danh sách rồi wrap vào Page
-            List<Invoice> invoices = invoiceService.search(keyword);
-            invoicePage = new PageImpl<>(invoices, PageRequest.of(page, size), invoices.size());
+        if ((keyword != null && !keyword.isEmpty()) || (status != null && !status.isEmpty())
+                || day != null || month != null || year != null) {
+           invoicePage = invoiceService.search(keyword, status, day, month, year, PageRequest.of(page, size));
         } else {
             invoicePage = invoiceRepository.findAll(PageRequest.of(page, size));
         }
 
-        model.addAttribute("invoicePage", invoicePage);
+        model.addAttribute("invoicePage", invoicePage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", invoicePage.getTotalPages());
         model.addAttribute("keyword", keyword);
+        model.addAttribute("status", status);
+        model.addAttribute("day", day);
+        model.addAttribute("month", month);
+        model.addAttribute("year", year);
+        model.addAttribute("years", invoiceService.getAllInvoiceYears());
+        model.addAttribute("statuses", InvoiceStatus.values());
 
         return "invoiceList";
     }

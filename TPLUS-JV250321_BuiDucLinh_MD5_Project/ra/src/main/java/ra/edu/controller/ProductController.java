@@ -18,20 +18,36 @@ public class ProductController {
     private final ProductService productService;
     private final ProductRepository productRepository;
 
-    @GetMapping
+    @GetMapping()
     public String listProducts(Model model,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "5") int size,
                                @RequestParam(required = false) String keyword,
+                               @RequestParam(required = false) String brand,
                                @RequestParam(required = false) Integer minStock,
-                               @RequestParam(required = false) Integer maxStock) {
-
+                               @RequestParam(required = false) Integer maxStock,
+                               @RequestParam(required = false) String isDeleted) {
+        Boolean deleted = null;
+        if ("true".equals(isDeleted)) {
+            deleted = true;
+        } else if ("false".equals(isDeleted)) {
+            deleted = false;
+        }
         Page<Product> productPage;
 
-        if (keyword != null && !keyword.isEmpty()) {
-            productPage = productRepository.findByNameContainingIgnoreCase(keyword, PageRequest.of(page, size));
-        } else if (minStock != null && maxStock != null) {
-            productPage = productRepository.findByStockBetween(minStock, maxStock, PageRequest.of(page, size));
+        if ((keyword != null && !keyword.isEmpty())
+                || (brand != null && !brand.isEmpty())
+                || minStock != null
+                || maxStock != null|| deleted != null) {
+
+            productPage = productRepository.search(
+                    (keyword != null && !keyword.isEmpty()) ? keyword : null,
+                    (brand != null && !brand.isEmpty()) ? brand : null,
+                    minStock,
+                    maxStock,
+                    deleted,
+                    PageRequest.of(page, size)
+            );
         } else {
             productPage = productRepository.findAll(PageRequest.of(page, size));
         }
@@ -40,8 +56,10 @@ public class ProductController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("keyword", keyword);
+        model.addAttribute("brand", brand);
         model.addAttribute("minStock", minStock);
         model.addAttribute("maxStock", maxStock);
+        model.addAttribute("isDeleted", deleted);
 
         return "productList";
     }

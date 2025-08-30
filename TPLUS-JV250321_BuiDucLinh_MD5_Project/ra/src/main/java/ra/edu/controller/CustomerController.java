@@ -23,22 +23,25 @@ public class CustomerController {
 
     @GetMapping
     public String listCustomers(Model model,
-                               @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "5") int size,
-                               @RequestParam(required = false) String keyword) {
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "5") int size,
+                                @RequestParam(required = false) String keyword,
+                                @RequestParam(required = false) String isDeleted
+                                ) {
 
-        Page<Customer> customerPage;
 
-        if (keyword != null && !keyword.isEmpty()) {
-            customerPage = customerRepository.findByNameContainingIgnoreCase(keyword, PageRequest.of(page, size));
-        } else {
-            customerPage = customerRepository.findAll(PageRequest.of(page, size));
+        Boolean deletedFilter = null;
+        if (isDeleted != null && !isDeleted.trim().isEmpty()) {
+            deletedFilter = Boolean.valueOf(isDeleted);
         }
 
-        model.addAttribute("customerPage", customerPage);
+        Page<Customer> customerPage = customerService.search(keyword,deletedFilter, page, size);
+
+        model.addAttribute("customerPage", customerPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", customerPage.getTotalPages());
         model.addAttribute("keyword", keyword);
+        model.addAttribute("isDeleted", deletedFilter);
 
         return "customerList";
     }

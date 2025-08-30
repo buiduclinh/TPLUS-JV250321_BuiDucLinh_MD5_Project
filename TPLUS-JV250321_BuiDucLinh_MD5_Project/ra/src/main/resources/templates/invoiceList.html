@@ -38,8 +38,54 @@
 
     <!-- Form tìm kiếm -->
     <form th:action="@{/invoices}" method="get" class="form-inline mb-3">
-        <input type="text" name="keyword" class="form-control mr-2" placeholder="Tìm theo ID/khách hàng/sản phẩm" th:value="${keyword}">
+        <input type="text" name="keyword" class="form-control mr-2"
+               placeholder="Tìm theo khách hàng/sản phẩm"
+               th:value="${keyword}">
+
+        <select name="status" class="form-control mr-2">
+            <option value=""
+                    th:selected="${status == null or status == ''}">--Tất cả--</option>
+            <option th:each="st : ${statuses}"
+                    th:value="${st.name()}"
+                    th:text="${st}"
+                    th:selected="${status != null and status.equals(st.name())}">
+            </option>
+        </select>
+
+
+        <!-- Day -->
+        <select name="day" class="form-control mr-2">
+            <option value="">Ngày</option>
+            <option th:each="d : ${#numbers.sequence(1,31)}"
+                    th:value="${d}"
+                    th:text="${d}"
+                    th:selected="${day != null and day == d}">
+            </option>
+        </select>
+
+        <!-- Month -->
+        <select name="month" class="form-control mr-2">
+            <option value="">Tháng</option>
+            <option th:each="m : ${#numbers.sequence(1,12)}"
+                    th:value="${m}"
+                    th:text="${m}"
+                    th:selected="${month != null and month == m}">
+            </option>
+        </select>
+
+        <!-- Year (chỉ lấy từ dữ liệu DB) -->
+        <select name="year" class="form-control mr-2">
+            <option value="">Năm</option>
+            <option th:each="y : ${years}"
+                    th:value="${y}"
+                    th:text="${y}"
+                    th:selected="${year != null and year == y}">
+            </option>
+        </select>
+
+
         <button type="submit" class="btn btn-primary">🔍 Tìm kiếm</button>
+        <a th:href="@{/invoices}" class="btn btn-secondary">Reset</a>
     </form>
 
     <!-- Bảng kết quả tìm kiếm hoặc tất cả hóa đơn -->
@@ -55,21 +101,7 @@
                 <th>Hành động</th>
             </tr>
             </thead>
-            <tbody th:if="${keyword != null and !keyword.isEmpty()}" th:each="i : ${invoices}">
-            <tr>
-                <td th:text="${i.id}"></td>
-                <td th:text="${i.customer != null ? i.customer.name : 'Chưa có KH'}"></td>
-                <td th:text="${i.createdAt != null ? i.createdAt : 'N/A'}"></td>
-                <td th:text="${i.totalAmount != null ? i.totalAmount : 0}"></td>
-                <td th:text="${i.status != null ? i.status : 'Chưa cập nhật'}"></td>
-                <td>
-                    <a th:href="@{'/invoiceDetails/' + ${i.id}}" class="btn btn-info btn-sm">Chi tiết</a>
-                    <a th:href="@{'/invoices/edit/' + ${i.id}}" class="btn btn-warning btn-sm">Cập nhật</a>
-                    <a th:href="@{'/invoices/delete/' + ${i.id}}" class="btn btn-danger btn-sm">Xóa</a>
-                </td>
-            </tr>
-            </tbody>
-            <tbody th:if="${keyword == null or keyword.isEmpty()}" th:each="i : ${invoicePage}">
+            <tbody th:each="i : ${invoicePage}">
             <tr>
                 <td th:text="${i.id}"></td>
                 <td th:text="${i.customer != null ? i.customer.name : 'Chưa có KH'}"></td>
@@ -90,14 +122,14 @@
     <nav aria-label="Page navigation" th:if="${totalPages > 0}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{/invoices(page=${currentPage - 1}, size=5)}">Trang trước</a>
+                <a class="page-link" th:href="@{/invoices(page=${currentPage - 1}, size=5, keyword=${keyword},status=${status},day=${day},month=${month},year=${year})}">Trang trước</a>
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                 th:classappend="${i == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/invoices(page=${i}, size=5)}" th:text="${i + 1}"></a>
+                <a class="page-link" th:href="@{/invoices(page=${i}, size=5, keyword=${keyword},status=${status},day=${day},month=${month},year=${year})}" th:text="${i + 1}"></a>
             </li>
             <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/invoices(page=${currentPage + 1}, size=5)}">Trang sau</a>
+                <a class="page-link" th:href="@{/invoices(page=${currentPage + 1}, size=5, keyword=${keyword},status=${status},day=${day},month=${month},year=${year})}">Trang sau</a>
             </li>
         </ul>
     </nav>

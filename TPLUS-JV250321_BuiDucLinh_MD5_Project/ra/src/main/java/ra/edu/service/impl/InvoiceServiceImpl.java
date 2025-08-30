@@ -2,8 +2,10 @@ package ra.edu.service.impl;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ra.edu.model.entity.Customer;
 import ra.edu.model.entity.Invoice;
+import ra.edu.model.entity.InvoiceStatus;
 import ra.edu.repository.InvoiceDetailRepository;
 import ra.edu.repository.InvoiceRepository;
 import ra.edu.service.CustomerService;
@@ -58,8 +60,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<Invoice> search(String keyword) {
-        return invoiceRepository.search(keyword);
+    public Page<Invoice> search(String keyword, String status, Integer day, Integer month, Integer year, Pageable pageable) {
+        InvoiceStatus invoiceStatus = null;
+        if (status != null && !status.isEmpty()) {
+            invoiceStatus = InvoiceStatus.valueOf(status);
+        }
+        if (keyword != null && keyword.trim().isEmpty()) keyword = null;
+
+        return invoiceRepository.search(keyword, invoiceStatus, day, month, year, pageable);
     }
 
     @Override
@@ -75,5 +83,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<Object[]> getRevenueByYear() {
         return invoiceRepository.getRevenueByYear();
+    }
+
+    @Override
+    public List<Integer> getAllInvoiceYears() {
+        return invoiceRepository.findAllYears();
     }
 }
