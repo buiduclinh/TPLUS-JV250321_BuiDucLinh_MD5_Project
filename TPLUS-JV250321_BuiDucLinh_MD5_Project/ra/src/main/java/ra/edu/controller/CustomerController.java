@@ -54,7 +54,7 @@ public class CustomerController {
 
     @PostMapping("/save")
     public String saveCustomer(@Valid @ModelAttribute Customer customer,
-                               BindingResult bindingResult, Model model) {
+                               BindingResult bindingResult) {
 
         if (customer.getId() == null) {
             if (customerRepository.existsByEmail(customer.getEmail())) {
@@ -64,7 +64,7 @@ public class CustomerController {
                 bindingResult.rejectValue("phone", "error.customer", "Số điện thoại đã tồn tại!");
             }
         }
-       
+
         if (bindingResult.hasErrors()) {
             return "customerForm";
         }

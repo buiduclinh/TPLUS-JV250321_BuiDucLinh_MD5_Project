@@ -17,7 +17,10 @@
 
             <div class="form-group">
                 <label>Khách hàng</label>
-                <select class="form-control" th:field="*{customer.id}" required>
+                <span th:if="${invoice.customer != null and invoice.customer.id != null}" th:text="${invoice.customer.name}"></span>
+                <input type="hidden" th:if="${invoice.customer != null and invoice.customer.id != null}"
+                       th:field="*{customer.id}" th:value="${invoice.customer.id}" />
+                <select class="form-control"  th:if="${invoice.customer == null or invoice.customer.id == null}" th:field="*{customer.id}"  required>
                     <option value="" disabled th:if="${invoice.customer == null}" selected>-- Chọn khách hàng --</option>
                     <option th:each="c : ${customers}"
                             th:value="${c.id}"

@@ -73,6 +73,7 @@ public class InvoiceController {
     @PostMapping("/save")
     public String saveInvoice(@ModelAttribute Invoice invoice, Model model) {
         Customer customer = invoice.getCustomer();
+        model.addAttribute("customer",customer);
         if (customer == null || Boolean.TRUE.equals(customer.getIsDeleted())) {
             model.addAttribute("errors", "Khách hàng không hợp lệ hoặc đã bị xóa!");
             return "invoiceForm";
@@ -106,6 +107,7 @@ public class InvoiceController {
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Integer id, Model model) {
         model.addAttribute("invoice", invoiceService.findById(id));
+        model.addAttribute("customers", customerRepository.findByIsDeletedFalse());
         return "invoiceForm";
     }
 
@@ -115,7 +117,7 @@ public class InvoiceController {
             invoiceService.delete(id);
             redirectAttrs.addFlashAttribute("success", "Xóa hóa đơn thành công");
         } catch (RuntimeException e) {
-            redirectAttrs.addFlashAttribute("error", e.getMessage());
+            redirectAttrs.addFlashAttribute("error", "Không thể xóa hóa đơn đã có sản phẩm");
         }
         return "redirect:/invoices";
     }

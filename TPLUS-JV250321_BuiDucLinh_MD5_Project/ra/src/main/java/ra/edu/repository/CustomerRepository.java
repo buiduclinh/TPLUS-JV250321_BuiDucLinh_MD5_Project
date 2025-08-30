@@ -22,7 +22,7 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
     boolean existsByEmail(String email);
 
     @Query("SELECT c FROM Customer c " +
-            "WHERE :isDeleted IS NULL OR c.isDeleted = :isDeleted " +
+            "WHERE (:isDeleted IS NULL OR c.isDeleted = :isDeleted )" +
             "AND (:keyword IS NULL OR " +
             "LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(c.phone) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
